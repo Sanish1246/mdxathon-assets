@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap");
+
+@layer base {
+  :root {
+    --color-primary: #11121a;
+    --color-hover: #272832;
+    --color-accent: #0071ff;
+    --color-text: #c9c9c9;
+  }
+
+  html {
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+
+  .bg-hover {
+    background-color: var(--color-hover);
+  }
+
+  .bg-accent {
+    background-color: var(--color-accent);
+  }
+
+  .text-text {
+    color: var(--color-text);
+  }
+
+  .border-hover {
+    border-color: var(--color-hover);
+  }
+
+  .border-text {
+    border-color: var(--color-text);
+  }
+
+  .font-poppins {
+    font-family: "Poppins", "Segoe UI", sans-serif;
+  }
+}

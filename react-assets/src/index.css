@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* Dark mode variant */
+@custom-variant dark (&:where(.dark, .dark *));
+
+html.dark {
+  @apply bg-black transition-colors duration-200;
+}
+
+html {
+  @apply bg-white transition-colors duration-200;
+}
+
+@layer components {
+  .task-card {
+    @apply mt-2 flex flex-row border-1 p-3 rounded-md shadow-md justify-between items-center dark:border-white dark:text-white dark:shadow-white/20;
+  }
+
+  .add-btn {
+    @apply border-1 text-sm ml-5 bg-blue-500 rounded-md p-1 hover:cursor-pointer hover:bg-blue-700 dark:border-white dark:text-white;
+  }
+}
