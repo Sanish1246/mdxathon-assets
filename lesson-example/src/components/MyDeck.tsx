@@ -22,7 +22,7 @@ const MyDeck = ({ deck }) => {
         x: 500,
       },
       {
-        y: 0,
+        x: 0,
         rotateY: 0,
         opacity: 1,
         duration: 0.6,
