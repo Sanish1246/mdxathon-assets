@@ -1,18 +1,36 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const Flashcard = ({ front, back, onAdd }) => {
   const [flipped, setFlipped] = useState(false);
+  const cardRef = useRef(null);
+
+  // animazione al flip
+  const handleFlip = () => {
+    setFlipped(!flipped);
+    gsap.to(cardRef.current, {
+      rotateY: flipped ? 0 : 180,
+      duration: 0.7,
+      ease: "power2.inOut",
+    });
+  };
 
   return (
     <div className="perspective-1000 w-64 h-40">
       <div
-        className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d cursor-pointer ${
-          flipped ? "rotate-y-180" : ""
-        }`}
-        onClick={() => setFlipped(!flipped)}
+        ref={cardRef}
+        className="relative w-full h-full cursor-pointer"
+        style={{
+          transformStyle: "preserve-3d",
+        }}
+        onClick={handleFlip}
       >
-        {/* Fronte della carta */}
-        <div className="absolute inset-0 w-full h-full flex items-center justify-center border rounded-xl shadow-lg bg-white dark:bg-gray-800 backface-hidden">
+        {/* Fronte */}
+        <div
+          className="absolute inset-0 w-full h-full flex items-center justify-center border rounded-xl shadow-lg bg-white dark:bg-gray-800"
+          style={{ backfaceVisibility: "hidden" }}
+        >
           <p className="text-center text-lg font-semibold px-4">{front}</p>
           <button
             onClick={(e) => {
@@ -25,8 +43,11 @@ const Flashcard = ({ front, back, onAdd }) => {
           </button>
         </div>
 
-        {/* Retro della carta */}
-        <div className="absolute inset-0 w-full h-full flex items-center justify-center border rounded-xl shadow-lg bg-gray-50 dark:bg-gray-700 backface-hidden rotate-y-180">
+        {/* Retro */}
+        <div
+          className="absolute inset-0 w-full h-full flex items-center justify-center border rounded-xl shadow-lg bg-gray-50 dark:bg-gray-700"
+          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+        >
           <p className="text-center text-lg font-semibold px-4">{back}</p>
           <button
             onClick={(e) => {
@@ -43,15 +64,6 @@ const Flashcard = ({ front, back, onAdd }) => {
       <style jsx>{`
         .perspective-1000 {
           perspective: 1000px;
-        }
-        .transform-style-preserve-3d {
-          transform-style: preserve-3d;
-        }
-        .backface-hidden {
-          backface-visibility: hidden;
-        }
-        .rotate-y-180 {
-          transform: rotateY(180deg);
         }
       `}</style>
     </div>

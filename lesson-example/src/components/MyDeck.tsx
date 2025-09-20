@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import gsap from "gsap";
 
 const MyDeck = ({ deck }) => {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
+  const cardRef = useRef(null);
 
   if (deck.length === 0) {
     return (
@@ -14,7 +16,32 @@ const MyDeck = ({ deck }) => {
 
   const nextCard = () => {
     setFlipped(false);
+    gsap.fromTo(
+      cardRef.current,
+      {
+        x: 500,
+      },
+      {
+        y: 0,
+        rotateY: 0,
+        opacity: 1,
+        duration: 0.6,
+        ease: "power2.inOut",
+      }
+    );
     setIndex((prev) => (prev + 1) % deck.length);
+  };
+
+  const handleFlip = () => {
+    setFlipped((prev) => {
+      const newFlipped = !prev;
+      gsap.to(cardRef.current, {
+        rotateY: newFlipped ? 180 : 0,
+        duration: 0.7,
+        ease: "power2.inOut",
+      });
+      return newFlipped;
+    });
   };
 
   const card = deck[index];
@@ -23,20 +50,29 @@ const MyDeck = ({ deck }) => {
     <div className="flex flex-col items-center mt-6">
       <div className="perspective-1000 w-64 h-40">
         <div
-          className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d cursor-pointer ${
-            flipped ? "rotate-y-180" : ""
-          }`}
-          onClick={() => setFlipped(!flipped)}
+          ref={cardRef}
+          className="relative w-full h-full cursor-pointer"
+          style={{ transformStyle: "preserve-3d" }}
+          onClick={handleFlip}
         >
-          {/* Fronte della carta */}
-          <div className="absolute inset-0 w-full h-full flex items-center justify-center border rounded-xl shadow-lg bg-white dark:bg-gray-800 backface-hidden">
+          {/* Fronte */}
+          <div
+            className="absolute inset-0 w-full h-full flex items-center justify-center border rounded-xl shadow-lg bg-white dark:bg-gray-800"
+            style={{ backfaceVisibility: "hidden" }}
+          >
             <p className="text-center text-lg font-semibold px-4">
               {card.front}
             </p>
           </div>
 
-          {/* Retro della carta */}
-          <div className="absolute inset-0 w-full h-full flex items-center justify-center border rounded-xl shadow-lg bg-gray-50 dark:bg-gray-700 backface-hidden rotate-y-180">
+          {/* Retro */}
+          <div
+            className="absolute inset-0 w-full h-full flex items-center justify-center border rounded-xl shadow-lg bg-gray-50 dark:bg-gray-700"
+            style={{
+              backfaceVisibility: "hidden",
+              transform: "rotateY(180deg)",
+            }}
+          >
             <p className="text-center text-lg font-semibold px-4">
               {card.back}
             </p>
@@ -68,15 +104,6 @@ const MyDeck = ({ deck }) => {
       <style jsx>{`
         .perspective-1000 {
           perspective: 1000px;
-        }
-        .transform-style-preserve-3d {
-          transform-style: preserve-3d;
-        }
-        .backface-hidden {
-          backface-visibility: hidden;
-        }
-        .rotate-y-180 {
-          transform: rotateY(180deg);
         }
       `}</style>
     </div>
