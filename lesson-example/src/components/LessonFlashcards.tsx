@@ -14,7 +14,7 @@ const lesson1Flashcards = [
   { front: "Come stai?", back: "How are you?" },
 ];
 
-const LessonFlashcards = ({ addToDeck }) => {
+const LessonFlashcards = ({ cardList, addToDeck }) => {
   const cardRefs = useRef([]);
 
   useGSAP(() => {
@@ -28,7 +28,7 @@ const LessonFlashcards = ({ addToDeck }) => {
   }, []);
   return (
     <div className="grid grid-cols-4 gap-4 mt-6">
-      {lesson1Flashcards.map((card, i) => (
+      {cardList.map((card, i) => (
         <div ref={(card) => (cardRefs.current[i] = card)}>
           <Flashcard
             key={i}
